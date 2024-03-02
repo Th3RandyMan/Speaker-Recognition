@@ -1,3 +1,4 @@
+from collections import defaultdict
 import numpy as np
 import pandas as pd
 from scipy.spatial import distance
@@ -12,7 +13,7 @@ def generate_codebook(data, size_codebook, epsilon=0.01, verbose=False):
 
     :return: codebook: numpy array of shape (size_codebook, n_dimensions)
     """
-
+    n_iterations = 0
     n_samples, n_dimensions = data.shape
     codebook = []
     # not sure if abs_weights or rel_weights is needed
@@ -25,7 +26,7 @@ def generate_codebook(data, size_codebook, epsilon=0.01, verbose=False):
     c_indices = np.zeros(n_samples)
     
     # Calculate distortion of first centroid
-    dist_c0 = distortion(c_indices, codebook, data)
+    avg_dist = distortion(c_indices, codebook, data)
 
     # Split centroids until reach the max number of centroids
     while len(codebook) < size_codebook:
@@ -39,20 +40,31 @@ def generate_codebook(data, size_codebook, epsilon=0.01, verbose=False):
             # Assign each data point to the nearest centroid
             c_indices = np.argmin(dist, axis=1)
 
-            uniq_centroids = np.unique(c_indices)
-            data_near_centroid = np.zeros((len(uniq_centroids), n_dimensions))
-            for i, c_index in enumerate(uniq_centroids):
-                mask = c_indices == c_index
-                data_near_centroid[i,:] = data[np.where(c_indices == c_index)]
+            data_near_centroid = defaultdict(list)
+            # uniq_centroids = np.unique(c_indices)
+            # data_near_centroid = np.zeros((len(uniq_centroids), n_dimensions))
+            for c_index in np.unique(c_indices):
+                data_near_centroid[c_index] = data[c_indices == c_index]
+            # for i, c_index in enumerate(uniq_centroids):
+            #     mask = c_indices == c_index
+            #     data_near_centroid[i,:] = data[np.where(c_indices == c_index)]
             
-            update_codebook(data_near_centroid, codebook, uniq_centroids)
+            update_codebook(data_near_centroid, codebook)
 
+            # Calculate new distance between each data point and each centroid
+            new_dist = distortion(c_indices, codebook, data)
+            err = (avg_dist - new_dist) / avg_dist
+            avg_dist = new_dist
 
+            n_iterations += 1
+            if verbose:
+                print(f'Iteration {n_iterations}: {len(codebook)} centroids, distortion = {avg_dist}')
+                print(f'\tError: {err}')
+                print(f'\tCodebook: {codebook}')
+                print(f'\tIndex for each data point: {c_indices}')
+                print()
 
-    
-    if verbose:
-        print(f'Initial centroid: {c0}')
-        print(f'Initial distortion: {dist_c0}')
+    return codebook
 
 def distortion(c_index, codebook, data):
     """
@@ -71,6 +83,7 @@ def distortion(c_index, codebook, data):
 
     return distance
 
+
 def split_codebook(codebook, epsilon):
     """
     Split each centroid.
@@ -80,12 +93,15 @@ def split_codebook(codebook, epsilon):
     :return: codebook: new list of centroids. Size will double.
     """
     new_codebook = []
+
     for centroid in codebook:
         new_codebook.append(centroid + epsilon)
         new_codebook.append(centroid - epsilon)
+
     return new_codebook
 
-def update_codebook(data, codebook, uniq_centroids):
+
+def update_codebook(data_near_centroid, codebook):
     """
     Update each centroid.
     :param data: numpy array of shape (n_samples, n_dimensions)
@@ -94,14 +110,19 @@ def update_codebook(data, codebook, uniq_centroids):
 
     :return: codebook: codebook with adjusted centroid positions
     """
-    # for i, centroid in enumerate(uniq_centroids):
-    #     codebook[centroid] = np.mean(data[i,:], axis=0
+    for i, centroid in enumerate(codebook):
+        if len(data_near_centroid[i]) > 0:  # if there are no data points near the centroid, don't update it
+            codebook[i] = np.mean(data_near_centroid[i], axis=0)
+    
+    return codebook
 
-    pass
 
+
+# Testing
 if __name__ == '__main__':
     #data = np.random.rand(100, 2)
     data = np.array([[i,j] for i in range(1,6) for j in range(1,6,2)])
-    #print(data)
     print(data.shape)
-    codebook = generate_codebook(data, 10, verbose=True)
+    print(data)
+    print()
+    codebook = generate_codebook(data, 16, verbose=True)
