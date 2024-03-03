@@ -3,118 +3,180 @@ import numpy as np
 import pandas as pd
 from scipy.spatial import distance
 
-def generate_codebook(data, size_codebook, epsilon=0.01, verbose=False):
-    """
-    Cluster data in centers by Lined-Buzo-Gray algorithm.
-    :param data: numpy array of shape (n_samples, n_dimensions)
-    :param size_codebook: max number of centroids
-    :param epsilon: threshold for stopping condition
-    :param verbose: print the number of iterations
 
-    :return: codebook: numpy array of shape (size_codebook, n_dimensions)
-    """
-    n_iterations = 0
-    n_samples, n_dimensions = data.shape
-    codebook = []
-    # not sure if abs_weights or rel_weights is needed
+class Codebook: # Maybe inherit from np.ndarray?
 
-    # Initialize codebook with first centroid
-    c0 = np.mean(data, axis=0)
-    codebook.append(c0)
+    def __init__(self, data=None, size_codebook=None, epsilon=0.01, verbose=False):
+        """
+        Generate codebook from initialized information.
 
-    # Initialize centroid index for each data point
-    c_indices = np.zeros(n_samples)
+        :param data: numpy array of shape (n_samples, n_dimensions)
+        :param size_codebook: max number of centroids
+        :param epsilon: threshold for stopping condition
+        :param verbose: print on each iterations
+        """
+        self.data = data
+        self.size_codebook = size_codebook
+        self.epsilon = epsilon
+        self.verbose = verbose
+
+        if(data is not None and size_codebook is not None):
+            self.codebook = self.__generate_codebook()
+        else:
+            self.codebook = None
     
-    # Calculate distortion of first centroid
-    avg_dist = distortion(c_indices, codebook, data)
+    def __str__(self) -> str:
+        return f'Codebook: {self.codebook}'
 
-    # Split centroids until reach the max number of centroids
-    while len(codebook) < size_codebook:
-        codebook = split_codebook(codebook, epsilon)
+    def fit(self, data=None, size_codebook=None, epsilon=None, verbose=None):
+        """
+        Generate codebook from initialized information.
 
-        err = 1 + epsilon
-        while err > epsilon:
-            # Calculate distance between each data point and each centroid
-            dist = distance.cdist(data, np.array(codebook), 'euclidean')
+        :param data: numpy array of shape (n_samples, n_dimensions)
+        :param size_codebook: max number of centroids
+        :param epsilon: threshold for stopping condition
+        :param verbose: print on each iterations
+        """
+        if(data is not None):
+            self.data = data
+        if(size_codebook is not None):
+            self.size_codebook = size_codebook
+        if(epsilon is not None):
+            self.epsilon = epsilon
+        if(verbose is not None):
+            self.verbose = verbose
 
-            # Assign each data point to the nearest centroid
+        if(self.data is None or self.size_codebook is None):
+            raise ValueError('Data and size_codebook must be initialized')
+        else:
+            self.codebook = self.__generate_codebook()
+
+    def getDistance(self, data):
+        """
+        Calculate distance between each data point and the closest centroid.
+        This data will be different from the one used to generate the codebook.
+
+        :param data: numpy array of shape (n_samples, n_dimensions)
+        """
+        if(self.codebook is None):
+            raise ValueError('Codebook must be initialized')
+        else:
+            dist = distance.cdist(data, np.array(self.codebook), 'euclidean')
             c_indices = np.argmin(dist, axis=1)
+            return self.__distortion(data, c_indices, self.codebook)
 
-            data_near_centroid = defaultdict(list)
-            # uniq_centroids = np.unique(c_indices)
-            # data_near_centroid = np.zeros((len(uniq_centroids), n_dimensions))
-            for c_index in np.unique(c_indices):
-                data_near_centroid[c_index] = data[c_indices == c_index]
-            # for i, c_index in enumerate(uniq_centroids):
-            #     mask = c_indices == c_index
-            #     data_near_centroid[i,:] = data[np.where(c_indices == c_index)]
-            
-            update_codebook(data_near_centroid, codebook)
+    def __generate_codebook(self):
+        """
+        Cluster data in centers by Lined-Buzo-Gray algorithm.
+        :param data: numpy array of shape (n_samples, n_dimensions)
+        :param size_codebook: max number of centroids
+        :param epsilon: threshold for stopping condition
+        :param verbose: print the number of iterations
 
-            # Calculate new distance between each data point and each centroid
-            new_dist = distortion(c_indices, codebook, data)
-            err = (avg_dist - new_dist) / avg_dist
-            avg_dist = new_dist
+        :return: codebook: numpy array of shape (size_codebook, n_dimensions)
+        """
+        n_iterations = 0
+        n_samples, n_dimensions = self.data.shape
+        codebook = []
+        # not sure if abs_weights or rel_weights is needed
 
-            n_iterations += 1
-            if verbose:
-                print(f'Iteration {n_iterations}: {len(codebook)} centroids, distortion = {avg_dist}')
-                print(f'\tError: {err}')
-                print(f'\tCodebook: {codebook}')
-                print(f'\tIndex for each data point: {c_indices}')
-                print()
+        # Initialize codebook with first centroid
+        c0 = np.mean(data, axis=0)
+        codebook.append(c0)
 
-    return codebook
+        # Initialize centroid index for each data point
+        c_indices = np.zeros(n_samples)
+        
+        # Calculate distortion of first centroid
+        avg_dist = self.__distortion(self.data, c_indices, codebook)
 
-def distortion(c_index, codebook, data):
-    """
-    Calculate distance between each data point and its nearest centroid.
-    :param c_index: index of the centroid for each data point
-    :param codebook: list of centroids
-    :param data: numpy array of shape (n_samples, n_dimensions)
+        # Split centroids until reach the max number of centroids
+        while len(codebook) < self.size_codebook:
+            codebook = self.__split_codebook(codebook)
 
-    :return: distortion: float. Total euclidean distance between each data point and its nearest centroid.
-    """
-    distance = 0
+            err = 1 + self.epsilon
+            while err > self.epsilon:
+                # Calculate distance between each data point and each centroid
+                dist = distance.cdist(data, np.array(codebook), 'euclidean')
 
-    for i, centroid in enumerate(codebook):
-        mask = c_index == i
-        distance += np.linalg.norm(data[mask] - centroid, axis=1).sum()
+                # Assign each data point to the nearest centroid
+                c_indices = np.argmin(dist, axis=1)
 
-    return distance
+                data_near_centroid = defaultdict(list)
+                # uniq_centroids = np.unique(c_indices)
+                # data_near_centroid = np.zeros((len(uniq_centroids), n_dimensions))
+                for c_index in np.unique(c_indices):
+                    data_near_centroid[c_index] = data[c_indices == c_index]
+                # for i, c_index in enumerate(uniq_centroids):
+                #     mask = c_indices == c_index
+                #     data_near_centroid[i,:] = data[np.where(c_indices == c_index)]
+                
+                codebook = self.__update_codebook(data_near_centroid, codebook)
+
+                # Calculate new distance between each data point and each centroid
+                new_dist = self.__distortion(self.data, c_indices, codebook)
+                err = (avg_dist - new_dist) / avg_dist
+                avg_dist = new_dist
+
+                n_iterations += 1
+                if self.verbose:
+                    print(f'Iteration {n_iterations}: {len(codebook)} centroids, distortion = {avg_dist}')
+                    print(f'\tError: {err}')
+                    print(f'\tCodebook: {codebook}')
+                    print(f'\tIndex for each data point: {c_indices}')
+                    print()
+
+        return np.array(codebook)
+
+    def __distortion(self, data, c_index, codebook):
+        """
+        Calculate distance between each data point and its nearest centroid.
+        :param c_index: index of the centroid for each data point
+        :param codebook: list of centroids
+        :param data: numpy array of shape (n_samples, n_dimensions)
+
+        :return: distortion: float. Total euclidean distance between each data point and its nearest centroid.
+        """
+        distance = 0
+
+        for i, centroid in enumerate(codebook):
+            mask = c_index == i
+            distance += np.linalg.norm(data[mask] - centroid, axis=1).sum()
+
+        return distance
 
 
-def split_codebook(codebook, epsilon):
-    """
-    Split each centroid.
-    :param codebook: list of centroids
-    :param epsilon: distance to split centroid
+    def __split_codebook(self, codebook):
+        """
+        Split each centroid.
+        :param codebook: list of centroids
+        :param epsilon: distance to split centroid
 
-    :return: codebook: new list of centroids. Size will double.
-    """
-    new_codebook = []
+        :return: codebook: new list of centroids. Size will double.
+        """
+        new_codebook = []
 
-    for centroid in codebook:
-        new_codebook.append(centroid + epsilon)
-        new_codebook.append(centroid - epsilon)
+        for centroid in codebook:
+            new_codebook.append(centroid + self.epsilon)
+            new_codebook.append(centroid - self.epsilon)
 
-    return new_codebook
+        return new_codebook
 
 
-def update_codebook(data_near_centroid, codebook):
-    """
-    Update each centroid.
-    :param data: numpy array of shape (n_samples, n_dimensions)
-    :param codebook: list of centroids
-    :param uniq_centroids: list of indices of centroids
+    def __update_codebook(self, data_near_centroid, codebook):
+        """
+        Update each centroid.
+        :param data: numpy array of shape (n_samples, n_dimensions)
+        :param codebook: list of centroids
+        :param uniq_centroids: list of indices of centroids
 
-    :return: codebook: codebook with adjusted centroid positions
-    """
-    for i, centroid in enumerate(codebook):
-        if len(data_near_centroid[i]) > 0:  # if there are no data points near the centroid, don't update it
-            codebook[i] = np.mean(data_near_centroid[i], axis=0)
-    
-    return codebook
+        :return: codebook: codebook with adjusted centroid positions
+        """
+        for i, centroid in enumerate(codebook):
+            if len(data_near_centroid[i]) > 0:  # if there are no data points near the centroid, don't update it
+                codebook[i] = np.mean(data_near_centroid[i], axis=0)
+        
+        return codebook
 
 
 
@@ -125,4 +187,6 @@ if __name__ == '__main__':
     print(data.shape)
     print(data)
     print()
-    codebook = generate_codebook(data, 16, verbose=True)
+    cb = Codebook(data, 16, verbose=True)
+    print(cb)
+    print(cb.getDistance(data))
