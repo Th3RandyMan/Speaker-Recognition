@@ -5,7 +5,6 @@ from scipy.spatial import distance
 
 
 class Codebook: # Maybe inherit from np.ndarray?
-
     def __init__(self, data=None, size_codebook=None, epsilon=0.01, verbose=False):
         """
         Generate codebook from initialized information.
@@ -28,7 +27,7 @@ class Codebook: # Maybe inherit from np.ndarray?
     def __str__(self) -> str:
         return f'Codebook: {self.codebook}'
 
-    def fit(self, data=None, size_codebook=None, epsilon=None, verbose=None):
+    def fit(self, data=None, size_codebook=None, epsilon=None, verbose=None) -> None:
         """
         Generate codebook from initialized information.
 
@@ -51,12 +50,14 @@ class Codebook: # Maybe inherit from np.ndarray?
         else:
             self.codebook = self.__generate_codebook()
 
-    def getDistance(self, data):
+    def getDistance(self, data) -> float:
         """
         Calculate distance between each data point and the closest centroid.
         This data will be different from the one used to generate the codebook.
 
         :param data: numpy array of shape (n_samples, n_dimensions)
+
+        :return: distortion: float. Total euclidean distance between each data point and its nearest centroid.
         """
         if(self.codebook is None):
             raise ValueError('Codebook must be initialized')
@@ -65,7 +66,7 @@ class Codebook: # Maybe inherit from np.ndarray?
             c_indices = np.argmin(dist, axis=1)
             return self.__distortion(data, c_indices, self.codebook)
 
-    def __generate_codebook(self):
+    def __generate_codebook(self) -> np.ndarray:
         """
         Cluster data in centers by Lined-Buzo-Gray algorithm.
         :param data: numpy array of shape (n_samples, n_dimensions)
@@ -146,7 +147,7 @@ class Codebook: # Maybe inherit from np.ndarray?
         return distance
 
 
-    def __split_codebook(self, codebook):
+    def __split_codebook(self, codebook) -> list:
         """
         Split each centroid.
         :param codebook: list of centroids
@@ -163,7 +164,7 @@ class Codebook: # Maybe inherit from np.ndarray?
         return new_codebook
 
 
-    def __update_codebook(self, data_near_centroid, codebook):
+    def __update_codebook(self, data_near_centroid, codebook) -> list:
         """
         Update each centroid.
         :param data: numpy array of shape (n_samples, n_dimensions)
