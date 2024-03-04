@@ -1,4 +1,5 @@
 import numpy as np
+from pathlib import Path
 from scipy.spatial import distance
 from collections import defaultdict
 
@@ -12,6 +13,7 @@ class Codebook: # Maybe inherit from np.ndarray?
         :param epsilon: threshold for stopping condition
         :param verbose: print on each iterations
         """
+        self.name = None
         self.data = data
         self.size_codebook = size_codebook
         self.epsilon = epsilon
@@ -24,6 +26,14 @@ class Codebook: # Maybe inherit from np.ndarray?
     
     def __str__(self) -> str:
         return f'Codebook: {self.codebook}'
+    
+    def shape(self) -> tuple:
+        """
+        Return the shape of the codebook.
+
+        :return: shape: tuple. (n_centroids, n_dimensions)
+        """
+        return self.codebook.shape
 
     def fit(self, data=None, size_codebook=None, epsilon=None, verbose=None) -> None:
         """
@@ -48,9 +58,9 @@ class Codebook: # Maybe inherit from np.ndarray?
         else:
             self.codebook = self.__generate_codebook()
 
-    def getDistance(self, data) -> float:
+    def getDistance(self, data: np.ndarray) -> float:
         """
-        Calculate distance between each data point and the closest centroid.
+        Calculate average distance between each data point and the closest centroid.
         This data will be different from the one used to generate the codebook.
 
         :param data: numpy array of shape (n_samples, n_dimensions)
@@ -60,9 +70,40 @@ class Codebook: # Maybe inherit from np.ndarray?
         if(self.codebook is None):
             raise ValueError('Codebook must be initialized')
         else:
-            dist = distance.cdist(data, np.array(self.codebook), 'euclidean')
+            n_samples, _ = data.shape
+            dist = distance.cdist(data, self.codebook, 'euclidean')
             c_indices = np.argmin(dist, axis=1)
-            return self.__distortion(data, c_indices, self.codebook)
+            return self.__distortion(data, c_indices, self.codebook)/n_samples # Average distance
+        
+    def save(self, filename: str) -> None:
+        """
+        Save codebook to file.
+
+        :param filename: name of the file
+        """
+        # Create directory if it doesn't exist
+        directory_path = Path().resolve() / "Codebooks"
+        Path(directory_path).mkdir(parents=True, exist_ok=True)
+
+        if(self.codebook is None):
+            raise ValueError('Codebook must be initialized')
+        else:
+            self.name = filename
+            np.save(directory_path / filename, self.codebook)
+
+    def load(self, filename: str) -> None:
+        """
+        Load codebook from file.
+
+        :param filename: name of the file
+        """
+        # Create directory if it doesn't exist
+        directory_path = Path().resolve() / "Codebooks"
+        Path(directory_path).mkdir(parents=True, exist_ok=True)
+
+        self.codebook = np.load(directory_path / (filename + '.npy'))
+        self.name = filename
+        self.size_codebook = self.codebook.shape[0]
 
     def __generate_codebook(self) -> np.ndarray:
         """
@@ -80,7 +121,7 @@ class Codebook: # Maybe inherit from np.ndarray?
         # not sure if abs_weights or rel_weights is needed
 
         # Initialize codebook with first centroid
-        c0 = np.mean(data, axis=0)
+        c0 = np.mean(self.data, axis=0)
         codebook.append(c0)
 
         # Initialize centroid index for each data point
@@ -96,7 +137,7 @@ class Codebook: # Maybe inherit from np.ndarray?
             err = 1 + self.epsilon
             while err > self.epsilon:
                 # Calculate distance between each data point and each centroid
-                dist = distance.cdist(data, np.array(codebook), 'euclidean')
+                dist = distance.cdist(self.data, np.array(codebook), 'euclidean')
 
                 # Assign each data point to the nearest centroid
                 c_indices = np.argmin(dist, axis=1)
@@ -105,7 +146,7 @@ class Codebook: # Maybe inherit from np.ndarray?
                 # uniq_centroids = np.unique(c_indices)
                 # data_near_centroid = np.zeros((len(uniq_centroids), n_dimensions))
                 for c_index in np.unique(c_indices):
-                    data_near_centroid[c_index] = data[c_indices == c_index]
+                    data_near_centroid[c_index] = self.data[c_indices == c_index]
                 # for i, c_index in enumerate(uniq_centroids):
                 #     mask = c_indices == c_index
                 #     data_near_centroid[i,:] = data[np.where(c_indices == c_index)]
@@ -122,15 +163,15 @@ class Codebook: # Maybe inherit from np.ndarray?
                     print(f'Iteration {n_iterations}: {len(codebook)} centroids, distortion = {avg_dist}')
                     print(f'\tError: {err}')
                     print(f'\tCodebook: {codebook}')
-                    print(f'\tIndex for each data point: {c_indices}')
+                    #print(f'\tIndex for each data point: {c_indices}')
                     print()
 
         return np.array(codebook)
 
-    def __distortion(self, data, c_index, codebook):
+    def __distortion(self, data: np.ndarray, c_indices: np.ndarray, codebook) -> float:
         """
         Calculate distance between each data point and its nearest centroid.
-        :param c_index: index of the centroid for each data point
+        :param c_indices: index of the centroid for each data point
         :param codebook: list of centroids
         :param data: numpy array of shape (n_samples, n_dimensions)
 
@@ -139,13 +180,13 @@ class Codebook: # Maybe inherit from np.ndarray?
         distance = 0
 
         for i, centroid in enumerate(codebook):
-            mask = c_index == i
+            mask = c_indices == i
             distance += np.linalg.norm(data[mask] - centroid, axis=1).sum()
 
         return distance
 
 
-    def __split_codebook(self, codebook) -> list:
+    def __split_codebook(self, codebook: list) -> list:
         """
         Split each centroid.
         :param codebook: list of centroids
@@ -162,7 +203,7 @@ class Codebook: # Maybe inherit from np.ndarray?
         return new_codebook
 
 
-    def __update_codebook(self, data_near_centroid, codebook) -> list:
+    def __update_codebook(self, data_near_centroid: dict, codebook: list) -> list:
         """
         Update each centroid.
         :param data: numpy array of shape (n_samples, n_dimensions)
