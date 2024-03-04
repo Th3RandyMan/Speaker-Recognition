@@ -1,7 +1,9 @@
 import numpy as np
 from glob import glob
 from pathlib import Path
+from scipy.io import wavfile
 from codebook import Codebook
+from processing import feature_extraction
 
 class CodeLibrary:
     def __init__(self, codebooks=None):
@@ -64,6 +66,14 @@ class CodeLibrary:
         return self.codebooks[closest_codebook_name]
     
 if __name__ == '__main__':
+    N = 1024    # Number of samples in each frame
+    M = 512     # Number of samples to move between frames
+    n_mfcc = 20 # Number of MFCC coefficients to return
+
+    size_codebook = 32  # Number of centroids
+    epsilon = 0.01      # Threshold for stopping condition
+    verbose = False     # Print on each iterations
+
     # Create codebooks for the library
     data_folder = Path().resolve() / "Audio Files"
 
@@ -71,3 +81,32 @@ if __name__ == '__main__':
     zero_train_files = glob(f'{data_folder}\Zero Train\*.wav')
 
     # Create codebooks
+    twelve_codelibrary = CodeLibrary()
+    zero_codelibrary = CodeLibrary()
+
+    for filename in twelve_train_files:
+        name = filename.split('\\')[-1][:-4]
+        sampling_rate, audio_data = wavfile.read(filename)
+
+        # Extract features
+        mfcc_features = feature_extraction(np.array(audio_data), N, M, sampling_rate, n_mfcc)
+        
+        # Create codebook
+        codebook = Codebook(mfcc_features, size_codebook=size_codebook, epsilon=epsilon, verbose=verbose)
+        codebook.save(name)
+        twelve_codelibrary.addCodebook(codebook)
+    
+    for filename in zero_train_files:
+        name = filename.split('\\')[-1][:-4]
+        sampling_rate, audio_data = wavfile.read(filename)
+
+        # Extract features
+        mfcc_features = feature_extraction(np.array(audio_data), N, M, sampling_rate, n_mfcc)
+        
+        # Create codebook
+        codebook = Codebook(mfcc_features, size_codebook=size_codebook, epsilon=epsilon, verbose=verbose)
+        codebook.save(name)
+        zero_codelibrary.addCodebook(codebook)
+
+    # Test the library
+    pass
