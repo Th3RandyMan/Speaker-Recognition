@@ -1,8 +1,6 @@
-from collections import defaultdict
 import numpy as np
-import pandas as pd
 from scipy.spatial import distance
-
+from collections import defaultdict
 
 class Codebook: # Maybe inherit from np.ndarray?
     def __init__(self, data=None, size_codebook=None, epsilon=0.01, verbose=False):
