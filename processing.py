@@ -1,7 +1,6 @@
 import numpy as np
 from librosa.feature import mfcc 
 
-
 # Could apply filtering or other preprocessing before calling function
 def feature_extraction(audio: np.ndarray, N: int, M: int, sampling_rate: int, n_mfcc: int) -> np.ndarray:
     """
