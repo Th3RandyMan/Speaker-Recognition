@@ -98,11 +98,12 @@ class Codebook: # Maybe inherit from np.ndarray?
         :param filename: name of the file
         """
         # Create directory if it doesn't exist
-        directory_path = Path().resolve() / "Codebooks"
-        Path(directory_path).mkdir(parents=True, exist_ok=True)
+        # directory_path = Path().resolve() / "Codebooks"
+        # Path(directory_path).mkdir(parents=True, exist_ok=True)
 
-        self.codebook = np.load(directory_path / (filename + '.npy'))
-        self.name = filename
+        #self.codebook = np.load(directory_path / (filename + '.npy'))
+        self.codebook = np.load(filename)
+        self.name = filename.split('\\')[-1][:-4]
         self.size_codebook = self.codebook.shape[0]
 
     def __generate_codebook(self) -> np.ndarray:
