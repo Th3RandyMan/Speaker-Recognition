@@ -1,5 +1,6 @@
+from librosa import power_to_db
 import numpy as np
-from librosa.feature import mfcc 
+from librosa.feature import mfcc, melspectrogram
 
 # Could apply filtering or other preprocessing before calling function
 def feature_extraction(audio: np.ndarray, N: int, M: int, sampling_rate: int, n_mfcc: int) -> np.ndarray:
@@ -21,5 +22,5 @@ def feature_extraction(audio: np.ndarray, N: int, M: int, sampling_rate: int, n_
         # Add in optional filters
         windowed_frame = frame * np.hamming(N)  # Hamming window
 
-        speaker_mfccs[i,:] = np.transpose(mfcc(y=windowed_frame, sr=sampling_rate, n_mfcc=n_mfcc))
+        speaker_mfccs[i,:] = np.transpose(mfcc(y=windowed_frame, sr=sampling_rate, n_mfcc=n_mfcc, hop_length=N+1))
     return speaker_mfccs

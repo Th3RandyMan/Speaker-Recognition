@@ -3,19 +3,25 @@ from glob import glob
 from pathlib import Path
 from scipy.io import wavfile
 from codebook import Codebook
+from collections import defaultdict
 from processing import feature_extraction
 
-class CodeLibrary:
+class CodeLibrary(dict):
+    """
+    
+    """
+    #library = defaultdict(list)
     def __init__(self, codebooks=None):
         """
         Initialize the CodeLibrary with a dictionary of codebooks.
 
         :param codebooks: dictionary of Codebook objects
         """
-        self.codebooks = codebooks
+        for codebook in codebooks if codebooks is not None else []:
+            self.addCodebook(codebook)
 
     def __str__(self) -> str:
-        return f'CodeLibrary: {self.codebooks}'
+        return f'CodeLibrary: {self}'
 
     def addCodebook(self, codebook: Codebook) -> None:
         """
@@ -23,7 +29,7 @@ class CodeLibrary:
 
         :param codebook: Codebook object
         """
-        self.codebooks[codebook.name] = codebook
+        self[codebook.name] = codebook
 
     def removeCodebook(self, codebook: Codebook) -> None:
         """
@@ -31,7 +37,7 @@ class CodeLibrary:
 
         :param codebook: Codebook object
         """
-        del self.codebooks[codebook.name]
+        del self[codebook.name]
 
     def getCodebook(self, name: str) -> Codebook:
         """
@@ -40,7 +46,7 @@ class CodeLibrary:
         :param name: name of the codebook
         :return: codebook: Codebook object
         """
-        return self.codebooks[name]
+        return self[name]
 
     def getDistance(self, data: np.ndarray) -> list[float]:
         """
@@ -50,9 +56,19 @@ class CodeLibrary:
         :return: distances: list of floats
         """
         distances = []
-        for codebook in self.codebooks.values():
+        for name, codebook in self.items():
             distances.append(codebook.getDistance(data))
         return distances
+
+    def getClosestCodebookName(self, data: np.ndarray) -> str:
+        """
+        Get the closest codebook to the data in the library.
+
+        :param data: numpy array of shape (n_samples, n_dimensions)
+        :return: str: Codebook name
+        """
+        distances = self.getDistance(data)
+        return list(self.keys())[np.argmin(distances)]
 
     def getClosestCodebook(self, data: np.ndarray) -> Codebook:
         """
@@ -61,9 +77,7 @@ class CodeLibrary:
         :param data: numpy array of shape (n_samples, n_dimensions)
         :return: codebook: Codebook object
         """
-        distances = self.getDistance(data)
-        closest_codebook_name = min(self.codebooks, key=lambda x: distances[self.codebooks[x]])
-        return self.codebooks[closest_codebook_name]
+        return self[self.getClosestCodebookName(data)]
     
 if __name__ == '__main__':
     N = 1024    # Number of samples in each frame
@@ -109,4 +123,4 @@ if __name__ == '__main__':
         zero_codelibrary.addCodebook(codebook)
 
     # Test the library
-    pass
+    print(zero_codelibrary.getClosestCodebookName(feature_extraction(audio_data, N, M, sampling_rate, n_mfcc)))
