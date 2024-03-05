@@ -4,6 +4,7 @@ from codelibrary import CodeLibrary
 
 data_folder = Path().resolve() / "Audio Files"
 
+# Gather the test and train files
 twelve_test_files = glob(f'{data_folder}\Twelve Test\*.wav')
 twelve_train_files = glob(f'{data_folder}\Twelve Train\*.wav')
 zero_test_files = glob(f'{data_folder}\Zero Test\*.wav')
@@ -15,6 +16,7 @@ twelve_codelibrary.fillLibrary("Codebooks/Twelve")
 zero_codelibrary = CodeLibrary()
 zero_codelibrary.fillLibrary("Codebooks/Zero")
 
+# Predict the test files
 for filename in twelve_test_files:
     name = filename.split('\\')[-1][:-4]
     print(f'Twelve Test: {name}')
