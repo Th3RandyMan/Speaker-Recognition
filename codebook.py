@@ -82,14 +82,16 @@ class Codebook: # Maybe inherit from np.ndarray?
         :param filename: name of the file
         """
         # Create directory if it doesn't exist
-        directory_path = Path().resolve() / "Codebooks"
-        Path(directory_path).mkdir(parents=True, exist_ok=True)
+        #directory_path = Path().resolve() / "Codebooks"
+        #Path(directory_path).mkdir(parents=True, exist_ok=True)
+        if(filename[-4:] != '.npy'):
+            filename += '.npy'
 
         if(self.codebook is None):
             raise ValueError('Codebook must be initialized')
         else:
             self.name = filename
-            np.save(directory_path / filename, self.codebook)
+            np.save(filename, self.codebook)
 
     def load(self, filename: str) -> None:
         """

@@ -108,11 +108,12 @@ class CodeLibrary(dict):
             codebook.load(filename)
             self.addCodebook(codebook)
     
-    def createLibrary(self, data_folder: str = None, N: int = 1024, M: int = 512, n_mfcc: int = 20, size_codebook: int = 32, epsilon: float = 0.01, verbose: bool = False) -> None:
+    def createLibrary(self, audio_folder: str, save_folder: str, N: int = 1024, M: int = 512, n_mfcc: int = 20, size_codebook: int = 32, epsilon: float = 0.01, verbose: bool = False) -> None:
         """
         Create the library from a folder of audio files.
 
-        :param data_folder: str. Path to the folder containing the audio files
+        :param audio_folder: str. Path to the folder containing the audio files
+        :param save_folder: str. Path to the folder to save the codebooks
         :param N: int. The number of samples in each frame
         :param M: int. The number of samples to move between frames
         :param n_mfcc: int. The number of MFCC coefficients to return
@@ -120,10 +121,10 @@ class CodeLibrary(dict):
         :param epsilon: float. Threshold for stopping condition
         :param verbose: bool. Print on each iterations
         """
-        if(data_folder is None):
-            data_folder = Path().resolve() / "Codebooks"
+        if(audio_folder is None or save_folder is None):
+            raise ValueError('audio_folder and save_folder must be initialized')
 
-        for filename in glob(f'{data_folder}\*.wav'):
+        for filename in glob(f'{audio_folder}\*.wav'):
             name = filename.split('\\')[-1][:-4]
             sampling_rate, audio_data = wavfile.read(filename)
 
@@ -132,8 +133,16 @@ class CodeLibrary(dict):
             
             # Create codebook
             codebook = Codebook(mfcc_features, size_codebook=size_codebook, epsilon=epsilon, verbose=verbose)
-            codebook.save(name)
+            codebook.save(save_folder + "/" + name)
             self.addCodebook(codebook)
+
+    def copy(self):
+        """
+        Create a copy of the library.
+
+        :return: library: CodeLibrary object
+        """
+        return CodeLibrary(self)
     
 if __name__ == '__main__':
     N = 1024    # Number of samples in each frame
@@ -146,6 +155,7 @@ if __name__ == '__main__':
 
     # Create codebooks for the library
     data_folder = Path().resolve() / "Audio Files"
+    save_folder = Path().resolve() / "Codebooks"
 
     twelve_train_files = glob(f'{data_folder}\Twelve Train\*.wav')
     zero_train_files = glob(f'{data_folder}\Zero Train\*.wav')
@@ -163,7 +173,7 @@ if __name__ == '__main__':
         
         # Create codebook
         codebook = Codebook(mfcc_features, size_codebook=size_codebook, epsilon=epsilon, verbose=verbose)
-        codebook.save(name)
+        codebook.save(str(save_folder) + "/" + name + '.npy')
         twelve_codelibrary.addCodebook(codebook)
     
     for filename in zero_train_files:
@@ -175,7 +185,7 @@ if __name__ == '__main__':
         
         # Create codebook
         codebook = Codebook(mfcc_features, size_codebook=size_codebook, epsilon=epsilon, verbose=verbose)
-        codebook.save(name)
+        codebook.save(str(save_folder) + "/" + name + '.npy')
         zero_codelibrary.addCodebook(codebook)
 
     # Test the library
