@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
     # Fill the libraries
     acc_shape = (len(N_list),len(M_list),len(n_mfcc_list),len(size_codebook_list))
-    with tqdm(total=len(np.prod(acc_shape))*(len(window_list) + len(beta_list) - 1)) as pbar:
+    with tqdm(total=np.prod(acc_shape)*(len(window_list) + len(beta_list) - 1)) as pbar:
         for window in window_list:
             beta = [1]
             if window == 'kaiser':
