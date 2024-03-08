@@ -12,9 +12,9 @@ zero_train_files = glob(f'{data_folder}\Zero Train\*.wav')
 
 # Create codelibraries
 twelve_codelibrary = CodeLibrary()
-twelve_codelibrary.fillLibrary("Codebooks/Twelve")
+twelve_codelibrary.fillLibrary("Codebooks/Best Twelve")
 zero_codelibrary = CodeLibrary()
-zero_codelibrary.fillLibrary("Codebooks/Zero")
+zero_codelibrary.fillLibrary("Codebooks/Best Zero")
 
 # Predict the test files
 for filename in twelve_test_files:
