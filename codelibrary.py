@@ -10,7 +10,7 @@ class CodeLibrary(dict):
     """
     Class to represent a library of codebooks.
     """
-    def __init__(self, codebooks=None):
+    def __init__(self, codebooks: Codebook=None):
         """
         Initialize the CodeLibrary with a dictionary of codebooks.
 
@@ -97,6 +97,21 @@ class CodeLibrary(dict):
         sampling_rate, audio_data = wavfile.read(filename)
         return self.getClosestCodebookName(feature_extraction(audio_data, N, M, sampling_rate, n_mfcc))
     
+    def getAccuracy(self, test_files: list[str], N: int = 1024, M: int = 512, n_mfcc: int = 20) -> float:
+        """
+        Get the accuracy of the library on a set of test files.
+
+        :param test_files: list of str. Paths to the test audio files
+        :return: float. Accuracy
+        """
+        correct = 0
+        for filename in test_files:
+            test_number = int(filename.split('_')[-1].strip('test')[:-4])
+            predicted_number = int(self.predict(filename, N, M, n_mfcc).split('_')[-1].strip('train')[:-4])
+            if(predicted_number == test_number):
+                correct += 1
+        return correct/len(test_files)
+    
     def fillLibrary(self, data_folder: str) -> None:
         """
         Fill the library with codebooks from a folder.
@@ -108,7 +123,7 @@ class CodeLibrary(dict):
             codebook.load(filename)
             self.addCodebook(codebook)
     
-    def createLibrary(self, audio_folder: str, save_folder: str, N: int = 1024, M: int = 512, n_mfcc: int = 20, size_codebook: int = 32, epsilon: float = 0.01, verbose: bool = False) -> None:
+    def createLibrary(self, audio_folder: str, save_folder: str, N: int = 1024, M: int = 512, n_mfcc: int = 20, size_codebook: int = 32, epsilon: float = 0.01, verbose: bool = False, window: str = 'hamming', beta: float = 14) -> None:
         """
         Create the library from a folder of audio files.
 
@@ -120,6 +135,8 @@ class CodeLibrary(dict):
         :param size_codebook: int. Number of centroids
         :param epsilon: float. Threshold for stopping condition
         :param verbose: bool. Print on each iterations
+        :param window: str. The window to apply to the frame. Options are 'hamming', 'hanning', 'blackman', 'bartlett', 'kaiser'
+        :param beta: float. The shape parameter for the kaiser window
         """
         if(audio_folder is None or save_folder is None):
             raise ValueError('audio_folder and save_folder must be initialized')
@@ -129,7 +146,7 @@ class CodeLibrary(dict):
             sampling_rate, audio_data = wavfile.read(filename)
 
             # Extract features
-            mfcc_features = feature_extraction(np.array(audio_data), N, M, sampling_rate, n_mfcc)
+            mfcc_features = feature_extraction(np.array(audio_data), N, M, sampling_rate, n_mfcc, window, beta)
             
             # Create codebook
             codebook = Codebook(mfcc_features, size_codebook=size_codebook, epsilon=epsilon, verbose=verbose)
@@ -142,7 +159,20 @@ class CodeLibrary(dict):
 
         :return: library: CodeLibrary object
         """
-        return CodeLibrary(self)
+        return CodeLibrary(self.values())
+    
+    def save(self, folder: str) -> None:
+        """
+        Save the library to a folder.
+
+        :param folder: str. Path to the folder to save the library
+        """
+        directory_path = Path(folder)
+        Path(directory_path).mkdir(parents=True, exist_ok=True)
+        
+        for name, codebook in self.items():
+            name = name.split('\\')[-1][:-4].split('/')[-1]
+            codebook.save(folder + "/" + name)
     
 if __name__ == '__main__':
     N = 1024    # Number of samples in each frame
