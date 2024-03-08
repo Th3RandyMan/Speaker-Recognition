@@ -87,7 +87,7 @@ class CodeLibrary(dict):
         """
         return self.getClosestCodebook(data).getDistance(data)
     
-    def predict(self, filename: str, N: int = 1024, M: int = 512, n_mfcc: int = 20) -> str:
+    def predict(self, filename: str, N: int = 1024, M: int = 512, n_mfcc: int = 20, window: str = 'hamming', beta: float = 14) -> str:
         """
         Predict the class of the audio file.
 
@@ -95,9 +95,9 @@ class CodeLibrary(dict):
         :return: str. Name of the predicted class
         """
         sampling_rate, audio_data = wavfile.read(filename)
-        return self.getClosestCodebookName(feature_extraction(audio_data, N, M, sampling_rate, n_mfcc))
+        return self.getClosestCodebookName(feature_extraction(audio_data, N, M, sampling_rate, n_mfcc, window, beta))
     
-    def getAccuracy(self, test_files: list[str], N: int = 1024, M: int = 512, n_mfcc: int = 20) -> float:
+    def getAccuracy(self, test_files: list[str], N: int = 1024, M: int = 512, n_mfcc: int = 20, window: str = 'hamming', beta: float = 14) -> float:
         """
         Get the accuracy of the library on a set of test files.
 
@@ -107,7 +107,7 @@ class CodeLibrary(dict):
         correct = 0
         for filename in test_files:
             test_number = int(filename.split('_')[-1].strip('test')[:-4])
-            predicted_number = int(self.predict(filename, N, M, n_mfcc).split('_')[-1].strip('train')[:-4])
+            predicted_number = int(self.predict(filename, N, M, n_mfcc, window, beta).split('_')[-1].strip('train')[:-4])
             if(predicted_number == test_number):
                 correct += 1
         return correct/len(test_files)

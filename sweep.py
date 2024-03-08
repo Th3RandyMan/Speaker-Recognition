@@ -58,13 +58,13 @@ if __name__ == '__main__':
                                 zero_codelibrary.createLibrary(str(data_folder) + "/Zero Train", str(save_folder), N=N, M=int(N*M), n_mfcc=n_mfcc, size_codebook=size_codebook, window=window, beta=b)
 
                                 # Predict the test files
-                                twelve_accuracy = twelve_codelibrary.getAccuracy(twelve_test_files)
+                                twelve_accuracy = twelve_codelibrary.getAccuracy(twelve_test_files, N=N, M=int(N*M), n_mfcc=n_mfcc, window=window, beta=b)
                                 twelve_acc_hold[i1,i2,i3,i4] = twelve_accuracy
                                 if(twelve_accuracy > twelve_best_accuracy):
                                     best_twelve_codebook = twelve_codelibrary.copy()
                                     twelve_best_accuracy = twelve_accuracy
                                 
-                                zero_accuracy = zero_codelibrary.getAccuracy(zero_test_files)
+                                zero_accuracy = zero_codelibrary.getAccuracy(zero_test_files, N=N, M=int(N*M), n_mfcc=n_mfcc, window=window, beta=b)
                                 zero_acc_hold[i1,i2,i3,i4] = zero_accuracy
                                 if(zero_accuracy > zero_best_accuracy):
                                     best_zero_codelibrary = zero_codelibrary.copy()
