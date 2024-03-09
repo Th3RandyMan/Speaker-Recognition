@@ -73,8 +73,8 @@ if __name__ == '__main__':
                                 pbar.update(1)
 
                 if(window == 'kaiser'):
-                    twelve_acc[window+b] = twelve_acc_hold
-                    zero_acc[window+b] = zero_acc_hold
+                    twelve_acc[window+str(b)] = twelve_acc_hold
+                    zero_acc[window+str(b)] = zero_acc_hold
                 else:
                     twelve_acc[window] = twelve_acc_hold
                     zero_acc[window] = zero_acc_hold
