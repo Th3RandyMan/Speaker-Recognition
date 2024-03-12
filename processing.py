@@ -1,6 +1,7 @@
 from librosa import power_to_db
 import numpy as np
 from librosa.feature import mfcc, melspectrogram
+import matplotlib.pyplot as plt
 
 # Could apply filtering or other preprocessing before calling function
 def feature_extraction(audio: np.ndarray, N: int, M: int, sampling_rate: int, n_mfcc: int, window: str = 'hamming', beta: float = 14) -> np.ndarray:
@@ -37,3 +38,21 @@ def feature_extraction(audio: np.ndarray, N: int, M: int, sampling_rate: int, n_
 
         speaker_mfccs[i,:] = np.transpose(mfcc(y=windowed_frame, sr=sampling_rate, n_mfcc=n_mfcc, hop_length=N+1))
     return speaker_mfccs
+
+def visualize_mfccs(mfcc_features: np.ndarray, mfcc_x: int, mfcc_y: int) -> None:
+    """
+    Visualize the MFCC features on a scatter plot.
+
+    :param mfcc_features: numpy array of shape (n_frames, n_mfcc)
+    :param mfcc_x: int. The index of the MFCC to use for the x-axis
+    :param mfcc_y: int. The index of the MFCC to use for the y-axis
+    """
+    # Extract the MFCCs for the x and y axes
+    x = mfcc_features[:, mfcc_x]
+    y = mfcc_features[:, mfcc_y]
+
+    plt.scatter(x, y)
+    plt.xlabel(f'MFCC {mfcc_x}')
+    plt.ylabel(f'MFCC {mfcc_y}')
+    plt.title('Scatter plot of MFCCs')
+    plt.show()
