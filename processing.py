@@ -39,7 +39,7 @@ def feature_extraction(audio: np.ndarray, N: int, M: int, sampling_rate: int, n_
         speaker_mfccs[i,:] = np.transpose(mfcc(y=windowed_frame, sr=sampling_rate, n_mfcc=n_mfcc, hop_length=N+1))
     return speaker_mfccs
 
-def visualize_mfccs(mfcc_features: np.ndarray, mfcc_x: int, mfcc_y: int) -> None:
+def visualize_mfccs(mfcc_features: np.ndarray, mfcc_x: int, mfcc_y: int, ax=None) -> None:
     """
     Visualize the MFCC features on a scatter plot.
 
@@ -51,8 +51,12 @@ def visualize_mfccs(mfcc_features: np.ndarray, mfcc_x: int, mfcc_y: int) -> None
     x = mfcc_features[:, mfcc_x]
     y = mfcc_features[:, mfcc_y]
 
-    plt.scatter(x, y)
-    plt.xlabel(f'MFCC {mfcc_x}')
-    plt.ylabel(f'MFCC {mfcc_y}')
-    plt.title('Scatter plot of MFCCs')
-    plt.show()
+    if ax is None:
+            fig, ax = plt.subplots()
+
+    ax.scatter(x, y, label='Speaker MFCCs')
+    ax.set_xlabel(f'MFCC {mfcc_x}')
+    ax.set_ylabel(f'MFCC {mfcc_y}')
+    ax.set_title('Scatter plot of MFCCs')
+
+    return ax

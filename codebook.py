@@ -2,6 +2,7 @@ import numpy as np
 from pathlib import Path
 from scipy.spatial import distance
 from collections import defaultdict
+import matplotlib.pyplot as plt
 
 class Codebook: # Maybe inherit from np.ndarray?
     def __init__(self, data=None, size_codebook=None, epsilon=0.01, verbose=False):
@@ -220,6 +221,30 @@ class Codebook: # Maybe inherit from np.ndarray?
                 codebook[i] = np.mean(data_near_centroid[i], axis=0)
         
         return codebook
+    
+    def plot_codebook(self, mfcc_x = None, mfcc_y = None, ax=None):
+        """
+        Visualize the MFCC features on a scatter plot.
+
+        :param mfcc_features: numpy array of shape (n_frames, n_mfcc)
+        :param mfcc_x: int. The index of the MFCC to use for the x-axis
+        :param mfcc_y: int. The index of the MFCC to use for the y-axis
+        :param ax: matplotlib axes object to plot on. If None, a new plot is created.
+        """
+        # Extract the Centroids for the x and y axes
+        x = self.codebook[:, mfcc_x]
+        y = self.codebook[:, mfcc_y]
+
+        if ax is None:
+            fig, ax = plt.subplots()
+
+        ax.scatter(x, y, label='Centroids')
+        ax.set_xlabel(f'MFCC {mfcc_x}')
+        ax.set_ylabel(f'MFCC {mfcc_y}')
+        ax.set_title('Scatter plot of Centroids')
+
+        return ax  # return the axes object so it can be modified or added to later
+
 
 
 
