@@ -20,7 +20,7 @@ class CodeLibrary(dict):
             self.addCodebook(codebook)
 
     def __str__(self) -> str:
-        return f'CodeLibrary: {self}'
+        return f'CodeLibrary: {self.values}'
 
     def addCodebook(self, codebook: Codebook) -> None:
         """
