@@ -111,10 +111,9 @@ class CodeLibrary(dict):
             number_string = re.search(r'\d+', os.path.basename(filename))
             test_number = int(number_string.group()) if number_string else None
 
-            try:
-                predicted_string = self.predict(filename, N, M, n_mfcc, window, beta)
-            except:
-                print(f"Error in file: ",filename)
+
+            predicted_string = self.predict(filename, N, M, n_mfcc, window, beta)
+
             predicted_number_string = re.search(r'\d+', predicted_string)
             predicted_number = int(predicted_number_string.group()) if predicted_number_string else None
 
