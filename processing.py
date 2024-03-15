@@ -18,6 +18,9 @@ def feature_extraction(audio: np.ndarray, N: int, M: int, sampling_rate: int, n_
 
     :return: mfcc_features: numpy array of shape (n_frames, n_mfcc)
     """
+    if( audio.shape != (len(audio),) ):
+        audio = audio[:,0]
+
     speaker_mfccs = np.zeros((1 + (len(audio) - N + 1)//M, n_mfcc)) # Initialize array to hold MFCCs
 
     for i, sample in enumerate(range(0, len(audio) - N + 1, M)):

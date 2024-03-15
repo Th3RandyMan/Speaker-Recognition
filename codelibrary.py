@@ -5,6 +5,8 @@ from scipy.io import wavfile
 from codebook import Codebook
 from collections import defaultdict
 from processing import feature_extraction
+import re
+import os
 
 class CodeLibrary(dict):
     """
@@ -106,8 +108,16 @@ class CodeLibrary(dict):
         """
         correct = 0
         for filename in test_files:
-            test_number = int(filename.split('_')[-1].strip('test')[:-4])
-            predicted_number = int(self.predict(filename, N, M, n_mfcc, window, beta).split('_')[-1].strip('train')[:-4])
+            number_string = re.search(r'\d+', os.path.basename(filename))
+            test_number = int(number_string.group()) if number_string else None
+
+            try:
+                predicted_string = self.predict(filename, N, M, n_mfcc, window, beta)
+            except:
+                print(f"Error in file: ",filename)
+            predicted_number_string = re.search(r'\d+', predicted_string)
+            predicted_number = int(predicted_number_string.group()) if predicted_number_string else None
+
             if(predicted_number == test_number):
                 correct += 1
         return correct/len(test_files)
