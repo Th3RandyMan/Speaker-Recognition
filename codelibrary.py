@@ -114,7 +114,7 @@ class CodeLibrary(dict):
 
             predicted_string = self.predict(filename, N, M, n_mfcc, window, beta)
 
-            predicted_number_string = re.search(r'\d+', predicted_string)
+            predicted_number_string = re.search(r'\d+', os.path.basename(predicted_string))
             predicted_number = int(predicted_number_string.group()) if predicted_number_string else None
 
             if(predicted_number == test_number):

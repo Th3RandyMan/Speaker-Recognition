@@ -12,6 +12,7 @@ Don't worry about numbering figures, I'll add in referencing in latex. After the
         * Windowing for each frame of the data (why it is needed)
         * How mfcc algorithm works. Maybe include that figure you made in test 3 of the triangles.
         * Idea behind centroids for localizing samples in space and how centroids are found.
+        * How predictions are performed from centroids
 * Design Choices
     * What hyperparameters are there.
     * Parameter sweep and best param results

@@ -2,6 +2,9 @@ from librosa import power_to_db
 import numpy as np
 from librosa.feature import mfcc, melspectrogram
 import matplotlib.pyplot as plt
+from scipy.signal import iirnotch, lfilter, freqz
+from scipy.io import wavfile
+import os
 
 # Could apply filtering or other preprocessing before calling function
 def feature_extraction(audio: np.ndarray, N: int, M: int, sampling_rate: int, n_mfcc: int, window: str = 'hamming', beta: float = 14) -> np.ndarray:
@@ -63,3 +66,60 @@ def visualize_mfccs(mfcc_features: np.ndarray, mfcc_x: int, mfcc_y: int, ax=None
     ax.set_title('Scatter plot of MFCCs')
 
     return ax
+
+def apply_notch_filter(input_filepath, output_filepath, notch_freq, Q):
+    """
+    Apply a notch filter to audio data and save the filtered data.
+
+    :param input_filepath: str. Path to the original audio file
+    :param output_filepath: str. Path to save the filtered audio file
+    :param notch_freq: float. The frequency to be removed (Hz)
+    :param Q: float. The quality factor
+    :param filter_type: str. The type of the filter
+    """
+    # Read the audio file
+    sampling_rate, audio_data = wavfile.read(input_filepath)
+
+    # Normalize audio data
+    audio_data = audio_data / np.max(np.abs(audio_data))
+
+    # Design notch filter
+    b, a = iirnotch(notch_freq / (sampling_rate / 2), Q)
+
+    freq, response = freqz(b, a)
+
+    # Convert frequency to Hz (from rad/sample)
+    freq = freq * sampling_rate / (2*np.pi)
+
+    # Plot the frequency response
+    plt.figure()
+    plt.plot(freq, 20*np.log10(abs(response)), color='blue')
+    plt.title('Frequency Response of the Notch Filter')
+    plt.xlabel('Frequency [Hz]')
+    plt.ylabel('Magnitude [dB]')
+    plt.grid()
+    plt.show()
+
+    # Apply notch filter
+    audio_filtered = lfilter(b, a, audio_data)
+
+    # Save filtered audio
+    wavfile.write(output_filepath, sampling_rate, np.int16(audio_filtered / np.max(np.abs(audio_filtered)) * 32767))
+
+def apply_notch_filter_to_directory(input_directory, output_directory, notch_freq, Q):
+    # Get a list of all .wav files in the input directory
+    input_files = [f for f in os.listdir(input_directory) if f.endswith('.wav')]
+
+    # Apply the notch filter to each file
+    for input_file in input_files:
+        input_filepath = os.path.join(input_directory, input_file)
+        
+        # Create the output filename by appending "_notched_<freq>Hz" to the original filename
+        base_name, ext = os.path.splitext(input_file)
+        output_file = f"{base_name}_notched_{notch_freq}Hz{ext}"
+        output_filepath = os.path.join(output_directory, output_file)
+        
+        # Create the output directory if it doesn't exist
+        os.makedirs(output_directory, exist_ok=True)
+        
+        apply_notch_filter(input_filepath, output_filepath, notch_freq, Q)
