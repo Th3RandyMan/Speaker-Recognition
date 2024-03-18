@@ -39,7 +39,7 @@ def feature_extraction(audio: np.ndarray, N: int, M: int, sampling_rate: int, n_
         elif window == 'bartlett':
             windowed_frame = frame * np.bartlett(N)
         elif window == 'kaiser':
-            windowed_frame = frame * np.kaiser(N, beta=14) # zero is rectangle window, 14 is good starting point
+            windowed_frame = frame * np.kaiser(N, beta=beta) # zero is rectangle window, 14 is good starting point
             # beta is the shape parameter: hamming is 5, hanning is 6, blackman is 8.6
 
         speaker_mfccs[i,:] = np.transpose(mfcc(y=windowed_frame, sr=sampling_rate, n_mfcc=n_mfcc, hop_length=N+1))
