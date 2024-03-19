@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.5)  15 MAR 2024 12:31
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 23.10.12) (preloaded format=pdflatex 2023.12.5)  18 MAR 2024 18:37
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -267,31 +267,40 @@ File: pdftex.def 2022/09/22 v1.2b Graphics/color driver for pdftex
 ))
 \Gin@req@height=\dimen184
 \Gin@req@width=\dimen185
+) (C:\Users\randa\AppData\Local\Programs\MiKTeX\tex/latex/tools\tabularx.sty
+Package: tabularx 2023/07/08 v2.11c `tabularx' package (DPC)
+\TX@col@width=\dimen186
+\TX@old@table=\dimen187
+\TX@old@col=\dimen188
+\TX@target=\dimen189
+\TX@delta=\dimen190
+\TX@cols=\count294
+\TX@ftn=\toks30
 ) (C:\Users\randa\AppData\Local\Programs\MiKTeX\tex/latex/cite\cite.sty
 LaTeX Info: Redefining \cite on input line 302.
 LaTeX Info: Redefining \nocite on input line 332.
 Package: cite 2015/02/27  v 5.5
 ) (C:\Users\randa\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
 File: l3backend-pdftex.def 2023-11-09 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count294
+\l__color_backend_stack_int=\count295
 \l__pdf_internal_box=\box59
 ) (EEC201FinalProject.aux)
 \openout1 = `EEC201FinalProject.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 17.
+LaTeX Font Info:    ... okay on input line 17.
 
 -- Lines per column: 56 (exact).
 Package caption Info: Begin \AtBeginDocument code.
@@ -299,23 +308,219 @@ Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: End \AtBeginDocument code.
 (C:\Users\randa\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count295
-\scratchdimen=\dimen186
+\scratchcounter=\count296
+\scratchdimen=\dimen191
 \scratchbox=\box60
-\nofMPsegments=\count296
-\nofMParguments=\count297
-\everyMPshowfont=\toks30
-\MPscratchCnt=\count298
-\MPscratchDim=\dimen187
-\MPnumerator=\count299
-\makeMPintoPDFobject=\count300
-\everyMPtoPDFconversion=\toks31
+\nofMPsegments=\count297
+\nofMParguments=\count298
+\everyMPshowfont=\toks31
+\MPscratchCnt=\count299
+\MPscratchDim=\dimen192
+\MPnumerator=\count300
+\makeMPintoPDFobject=\count301
+\everyMPtoPDFconversion=\toks32
 ) (C:\Users\randa\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
  (C:\Users\randa\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
-))
+)) [1{C:/Users/randa/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/randa/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}
+
+
+] (C:\Users\randa\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd) (C:\Users\randa\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd)
+Underfull \hbox (badness 10000) in paragraph at lines 82--82
+[]|\OT1/ptm/m/n/8 Number of
+ []
+
+
+Underfull \hbox (badness 5893) in paragraph at lines 82--82
+\OT1/ptm/m/n/8 sam-ples in a
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 82--82
+[]|\OT1/ptm/m/n/8 Number
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 82--82
+\OT1/ptm/m/n/8 of sam-ples
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 82--82
+\OT1/ptm/m/n/8 be-tween the
+ []
+
+
+Underfull \hbox (badness 2486) in paragraph at lines 82--82
+\OT1/ptm/m/n/8 start of ev-ery
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 82--82
+[]|$\OML/cmm/m/it/8 N$\OT1/ptm/m/n/8 *(0.4, 0.5,
+ []
+
+
+Underfull \hbox (badness 3386) in paragraph at lines 82--82
+[]|\OT1/ptm/m/n/8 Type of win-
+ []
+
+
+Underfull \hbox (badness 2846) in paragraph at lines 82--82
+\OT1/ptm/m/n/8 dow used for
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 82--82
+[]|\OT1/ptm/m/n/8 Hamming,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 82--82
+\OT1/ptm/m/n/8 Han-ning,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 82--82
+[]|\OT1/ptm/m/n/8 Number of
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 82--82
+[]|\OT1/ptm/m/n/8 Number of
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 82--82
+\OT1/ptm/m/n/8 di-men-sions
+ []
+
+
+Underfull \hbox (badness 3158) in paragraph at lines 82--82
+\OT1/ptm/m/n/8 for each data
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 82--82
+\OT1/ptm/m/n/8 cre-ated the
+ []
+
+
+Overfull \hbox (1.15799pt too wide) in paragraph at lines 82--82
+[]|$\OML/cmm/m/it/8 size[]codebook$| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 82--82
+[]|\OT1/ptm/m/n/8 Number of
+ []
+
+<figures/twelve_sweep_hamming.png, id=8, 445.1832pt x 325.9377pt>
+File: figures/twelve_sweep_hamming.png Graphic file (type png)
+<use figures/twelve_sweep_hamming.png>
+Package pdftex.def Info: figures/twelve_sweep_hamming.png  used on input line 89.
+(pdftex.def)             Requested size: 154.80157pt x 113.33885pt.
+LaTeX Font Info:    Trying to load font information for OT1+phv on input line 89.
+(C:\Users\randa\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1phv.fd
+File: ot1phv.fd 2020/03/25 scalable font definitions for OT1/phv.
+)
+File: figures/twelve_sweep_hamming.png Graphic file (type png)
+<use figures/twelve_sweep_hamming.png>
+Package pdftex.def Info: figures/twelve_sweep_hamming.png  used on input line 91.
+(pdftex.def)             Requested size: 154.80157pt x 113.33885pt.
+File: figures/twelve_sweep_hamming.png Graphic file (type png)
+<use figures/twelve_sweep_hamming.png>
+Package pdftex.def Info: figures/twelve_sweep_hamming.png  used on input line 93.
+(pdftex.def)             Requested size: 154.80157pt x 113.33885pt.
+File: figures/twelve_sweep_hamming.png Graphic file (type png)
+<use figures/twelve_sweep_hamming.png>
+Package pdftex.def Info: figures/twelve_sweep_hamming.png  used on input line 95.
+(pdftex.def)             Requested size: 154.80157pt x 113.33885pt.
+File: figures/twelve_sweep_hamming.png Graphic file (type png)
+<use figures/twelve_sweep_hamming.png>
+Package pdftex.def Info: figures/twelve_sweep_hamming.png  used on input line 97.
+(pdftex.def)             Requested size: 154.80157pt x 113.33885pt.
+File: figures/twelve_sweep_hamming.png Graphic file (type png)
+<use figures/twelve_sweep_hamming.png>
+Package pdftex.def Info: figures/twelve_sweep_hamming.png  used on input line 99.
+(pdftex.def)             Requested size: 154.80157pt x 113.33885pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<figures/audiowave.png, id=10, 243.15843pt x 184.43906pt>
+File: figures/audiowave.png Graphic file (type png)
+<use figures/audiowave.png>
+Package pdftex.def Info: figures/audiowave.png  used on input line 115.
+(pdftex.def)             Requested size: 258.0pt x 195.69583pt.
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 115--116
+ [][] 
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<figures/stft1.png, id=11, 240.14719pt x 188.95593pt>
+File: figures/stft1.png Graphic file (type png)
+<use figures/stft1.png>
+Package pdftex.def Info: figures/stft1.png  used on input line 122.
+(pdftex.def)             Requested size: 154.80157pt x 121.805pt.
+<figures/stft2.png, id=12, 228.10219pt x 179.16937pt>
+File: figures/stft2.png Graphic file (type png)
+<use figures/stft2.png>
+Package pdftex.def Info: figures/stft2.png  used on input line 124.
+(pdftex.def)             Requested size: 154.80157pt x 121.5957pt.
+<figures/stft3.png, id=13, 231.86626pt x 182.18062pt>
+File: figures/stft3.png Graphic file (type png)
+<use figures/stft3.png>
+Package pdftex.def Info: figures/stft3.png  used on input line 126.
+(pdftex.def)             Requested size: 154.80157pt x 121.63226pt.
+<figures/melweights.png, id=14, 469.755pt x 147.55125pt>
+File: figures/melweights.png Graphic file (type png)
+<use figures/melweights.png>
+Package pdftex.def Info: figures/melweights.png  used on input line 137.
+(pdftex.def)             Requested size: 516.0pt x 162.07721pt.
+<figures/melspectrum1.png, id=15, 469.755pt x 167.12437pt>
+File: figures/melspectrum1.png Graphic file (type png)
+<use figures/melspectrum1.png>
+Package pdftex.def Info: figures/melspectrum1.png  used on input line 145.
+(pdftex.def)             Requested size: 516.0pt x 183.57724pt.
+<figures/melspectrum2.png, id=16, 469.755pt x 167.12437pt>
+File: figures/melspectrum2.png Graphic file (type png)
+<use figures/melspectrum2.png>
+Package pdftex.def Info: figures/melspectrum2.png  used on input line 147.
+(pdftex.def)             Requested size: 516.0pt x 183.57724pt.
+<figures/centroids.png, id=17, 258.21469pt x 204.765pt>
+File: figures/centroids.png Graphic file (type png)
+<use figures/centroids.png>
+Package pdftex.def Info: figures/centroids.png  used on input line 161.
+(pdftex.def)             Requested size: 258.0pt x 204.6145pt.
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 161--162
+ [][] 
+ []
+
+<figures/notchfilter.png, id=18, 432.11438pt x 342.5297pt>
+File: figures/notchfilter.png Graphic file (type png)
+<use figures/notchfilter.png>
+Package pdftex.def Info: figures/notchfilter.png  used on input line 174.
+(pdftex.def)             Requested size: 258.0pt x 204.52112pt.
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 174--175
+ [][] 
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[2]
+
+LaTeX Warning: Text page 3 contains only floats.
+
+[3 <./figures/twelve_sweep_hamming.png> <./figures/audiowave.png>]
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -327,28 +532,27 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[1{C:/Users/randa/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/randa/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}
+[4 <./figures/stft1.png> <./figures/stft2.png> <./figures/stft3.png> <./figures/melweights.png>] [5 <./figures/melspectrum1.png> <./figures/melspectrum2.png>] [6
 
 
-
-] (EEC201FinalProject.aux)
+ <./figures/centroids.png> <./figures/notchfilter.png>] (EEC201FinalProject.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 4544 strings out of 474587
- 80299 string characters out of 5745702
- 1927558 words of memory out of 5000000
- 26697 multiletter control sequences out of 15000+600000
- 586300 words of font info for 83 fonts, out of 8000000 for 9000
+ 4831 strings out of 474587
+ 85798 string characters out of 5745702
+ 1951558 words of memory out of 5000000
+ 26953 multiletter control sequences out of 15000+600000
+ 597333 words of font info for 110 fonts, out of 8000000 for 9000
  1145 hyphenation exceptions out of 8191
- 57i,8n,65p,363b,254s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/randa/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/randa/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/randa/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb>
-Output written on EEC201FinalProject.pdf (1 page, 37375 bytes).
+ 57i,15n,65p,873b,506s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/randa/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/randa/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/randa/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/randa/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/randa/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/randa/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/randa/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/randa/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/randa/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on EEC201FinalProject.pdf (6 pages, 436205 bytes).
 PDF statistics:
- 22 PDF objects out of 1000 (max. 8388607)
+ 88 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 51 words of extra memory for PDF output out of 10000 (max. 10000000)
 
